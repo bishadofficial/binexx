@@ -7,29 +7,29 @@ import { Dialog } from '@headlessui/react';
 import Webcam from 'react-webcam';
 
 const outcomes = [
-    'Buy (1 min, strong upward push expected)', 'Sell (2 min, market shows weakness)',
-    'Buy (3 min, momentum building for breakout)', 'Sell (5 min, trend shift detected)',
-    'Buy (1 min, possible bullish surge)', 'Sell (2 min, price struggling to hold up)',
-    'Buy (3 min, short-term buying pressure)', 'Sell (4 min, reversal signs spotted)',
-    'Buy (5 min, buyers gaining control)', 'Sell (6 min, sellers stepping in)',
-    'Buy (1 min, volatility increasing in favor)', 'Sell (2 min, potential rejection at highs)',
-    'Buy (3 min, market reacting positively)', 'Sell (5 min, downside momentum building)',
-    'Buy (7 min, uptrend confirmation)', 'Sell (8 min, lower highs forming)',
-    'Buy (10 min, strong price movement ahead)', 'Sell (12 min, downward pressure increasing)',
-    'Buy (1 min, support holding well)', 'Sell (2 min, resistance proving strong)',
-    'Buy (3 min, aggressive buyers entering)', 'Sell (4 min, possible fakeout scenario)',
-    'Buy (5 min, steady upward movement)', 'Sell (6 min, sudden weakness in price)',
-    'Buy (7 min, bullish activity spotted)', 'Sell (9 min, risk of deeper pullback)',
-    'Buy (10 min, potential breakout setting up)', 'Sell (12 min, exhaustion signals visible)',
-    'Buy (15 min, continuation of trend likely)', 'Sell (20 min, probable sell-off ahead)'
-  ];
-  
+  'Buy (1 min, strong upward push expected)', 'Sell (2 min, market shows weakness)',
+  'Buy (3 min, momentum building for breakout)', 'Sell (5 min, trend shift detected)',
+  'Buy (1 min, possible bullish surge)', 'Sell (2 min, price struggling to hold up)',
+  'Buy (3 min, short-term buying pressure)', 'Sell (4 min, reversal signs spotted)',
+  'Buy (5 min, buyers gaining control)', 'Sell (6 min, sellers stepping in)',
+  'Buy (1 min, volatility increasing in favor)', 'Sell (2 min, potential rejection at highs)',
+  'Buy (3 min, market reacting positively)', 'Sell (5 min, downside momentum building)',
+  'Buy (7 min, uptrend confirmation)', 'Sell (8 min, lower highs forming)',
+  'Buy (10 min, strong price movement ahead)', 'Sell (12 min, downward pressure increasing)',
+  'Buy (1 min, support holding well)', 'Sell (2 min, resistance proving strong)',
+  'Buy (3 min, aggressive buyers entering)', 'Sell (4 min, possible fakeout scenario)',
+  'Buy (5 min, steady upward movement)', 'Sell (6 min, sudden weakness in price)',
+  'Buy (7 min, bullish activity spotted)', 'Sell (9 min, risk of deeper pullback)',
+  'Buy (10 min, potential breakout setting up)', 'Sell (12 min, exhaustion signals visible)',
+  'Buy (15 min, continuation of trend likely)', 'Sell (20 min, probable sell-off ahead)'
+];
 
 export default function BinaryBetPage() {
   const [isPicking, setIsPicking] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [facingMode, setFacingMode] = useState('environment');
   const webcamRef = useRef(null);
 
   const handleTakePhoto = () => {
@@ -81,9 +81,15 @@ export default function BinaryBetPage() {
 
       {isCameraOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80" onClick={() => setIsCameraOpen(false)}>
-          <div className="bg-white p-4 rounded-xl shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <Webcam ref={webcamRef} screenshotFormat="image/jpeg" className="w-full" />
+          <div className="bg-white p-4 rounded-xl shadow-xl relative" onClick={(e) => e.stopPropagation()}>
+            <Webcam
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={{ facingMode }}
+              className="w-full"
+            />
             <button onClick={handleTakePhoto} className="mt-4 bg-black text-white px-4 py-2 rounded-lg">Capture</button>
+            <button onClick={() => setFacingMode(facingMode === 'environment' ? 'user' : 'environment')} className="absolute top-2 right-2 bg-gray-800 text-white px-4 py-2 rounded-lg">Switch Camera</button>
           </div>
         </div>
       )}
